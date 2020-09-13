@@ -1,18 +1,28 @@
 import mongoose from 'mongoose';
+import { DatabaseError } from '../helper/error.helper';
 
 export default function initDatabase(): void {
-  mongoose.connect('mongodb://localhost:27017/next_video', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  const DB_NAME = process.env.DB_NAME;
+  const DB_URL = process.env.DB_URL;
+  const DB_PORT = process.env.DB_PORT;
 
-  const { connection } = mongoose;
+  if (DB_NAME && DB_URL && DB_PORT) {
+    mongoose.connect(`${DB_URL}:${DB_PORT}`, {
+      dbName: DB_NAME,
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
 
-  connection.on('error', (error) => {
-    console.log(error);
-  });
+    const { connection } = mongoose;
 
-  connection.once('open', function () {
-    console.log('connected');
-  });
+    connection.on('error', (error) => {
+      throw new DatabaseError(error.message);
+    });
+
+    connection.once('open', function () {
+      console.log('connected');
+    });
+  } else {
+    throw new DatabaseError('Invalid Database Connection options');
+  }
 }
