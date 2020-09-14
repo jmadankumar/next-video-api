@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { wrapAsyncError } from '../helper/error.helper';
 import { generateToken } from '../helper/jwt.helper';
 import AuthService from '../service/auth.service';
-import { LoginRequest, LoginResponse, RegisterRequest, RegisterResponse } from '../types/auth';
+import { LoginRequest, LoginResponse, RegisterRequest, RegisterResponse } from '../types/api/auth-api';
 
 const login = wrapAsyncError(
   async (req: Request<null, LoginResponse, LoginRequest>, res: Response<LoginResponse>) => {

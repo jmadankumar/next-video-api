@@ -1,24 +1,55 @@
-import mongoose from 'mongoose';
-
-const { Schema, SchemaTypes } = mongoose;
+import { Types, Schema, model } from 'mongoose';
+import { IChannel } from '../types/model/channel-model';
 
 const channelSchema = new Schema(
   {
-    name: { type: SchemaTypes.String, required: true, maxlength: 20 },
-    description: { type: SchemaTypes.String, required: true },
-    coverImageUrl: { type: SchemaTypes.String },
-    imageUrl: { type: SchemaTypes.String },
-    active: { type: SchemaTypes.Boolean, default: true },
-    createdDate: { type: SchemaTypes.Date, default: Date.now },
-    createdBy: { type: SchemaTypes.ObjectId, required: true },
-    updatedDate: { type: SchemaTypes.Date, default: Date.now },
-    updatedBy: { type: SchemaTypes.ObjectId, required: true },
-    deleted: { type: SchemaTypes.Boolean, default: false },
-    ownerId: { type: SchemaTypes.ObjectId, required: true },
+    name: {
+      type: String,
+      required: true,
+      maxlength: 20,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    coverImageUrl: {
+      type: String,
+    },
+    imageUrl: {
+      type: String,
+    },
+    active: {
+      type: Boolean,
+      default: true,
+    },
+    createdDate: {
+      type: Date,
+      default: Date.now,
+    },
+    createdBy: {
+      type: Types.ObjectId,
+      required: true,
+    },
+    updatedDate: {
+      type: Date,
+      default: Date.now,
+    },
+    updatedBy: {
+      type: Types.ObjectId,
+      required: true,
+    },
+    deleted: {
+      type: Boolean,
+      default: false,
+    },
+    ownerId: {
+      type: Types.ObjectId,
+      required: true,
+    },
   },
   { collection: 'channel' },
 );
 
-const ChannelModel = mongoose.model('Channel', channelSchema);
+const ChannelModel = model<IChannel>('Channel', channelSchema);
 
 export default ChannelModel;

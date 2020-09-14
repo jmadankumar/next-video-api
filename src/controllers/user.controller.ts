@@ -7,7 +7,7 @@ import {
   GetUserByIdResponse,
   UpdateUserResponse,
 } from '../types/api/user-api';
-import { UserDTO } from '../types/user';
+import { UserDTO } from '../types/dto/user';
 
 const createUser = async (
   req: Request<null, null, UserDTO>,

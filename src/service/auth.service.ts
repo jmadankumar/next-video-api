@@ -1,7 +1,7 @@
 import { comparePasswordHash, genPasswordHash } from '../helper/auth.helper';
 import UserModel from '../models/user.model';
 import { AccessDeniedError, BadRequestError } from '../helper/error.helper';
-import { UserDTO } from '../types/user';
+import { UserDTO } from '../types/dto/user';
 import UserDTOUtil from '../util/UserDTO.util';
 import { parseGender } from '../util/gender.util';
 

@@ -1,5 +1,5 @@
 import UserModel from '../models/user.model';
-import { UserDTO } from '../types/user';
+import { UserDTO } from '../types/dto/user';
 import { parseGender } from '../util/gender.util';
 import UserDTOUtil from '../util/UserDTO.util';
 
