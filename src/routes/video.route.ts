@@ -1,25 +1,17 @@
 import { Router } from 'express';
-import {
-  getAllVideo,
-  getVideoById,
-  createVideo,
-  updateVideo,
-  deleteVideo,
-  uploadVideo,
-} from '../controllers/video.controller';
+import VideoController from '../controllers/video.controller';
+import { wrapAsyncError } from '../helper/error.helper';
 
 const videoRouter = Router();
 
-videoRouter.get('/', getAllVideo);
+videoRouter.post('/', wrapAsyncError(VideoController.createVideo));
 
-videoRouter.get('/:id', getVideoById);
+videoRouter.put('/:id', wrapAsyncError(VideoController.updateVideo));
 
-videoRouter.post('/', createVideo);
+videoRouter.delete('/:id', wrapAsyncError(VideoController.deleteVideo));
 
-videoRouter.put('/:id', updateVideo);
+videoRouter.get('/', wrapAsyncError(VideoController.getAllVideo));
 
-videoRouter.put('/upload', uploadVideo);
-
-videoRouter.delete('/:id', deleteVideo);
+videoRouter.get('/:id', wrapAsyncError(VideoController.getVideoById));
 
 export default videoRouter;
