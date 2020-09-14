@@ -1,8 +1,9 @@
 import { comparePasswordHash, genPasswordHash } from '../helper/auth.helper';
-import UserModel, { IUser } from '../models/user.model';
+import UserModel from '../models/user.model';
 import { AccessDeniedError, BadRequestError } from '../helper/error.helper';
 import { UserDTO } from '../types/user';
 import UserDTOUtil from '../util/UserDTO.util';
+import { parseGender } from '../util/gender.util';
 
 const login = async (email: string, password: string): Promise<UserDTO> => {
   const user = await UserModel.findOne({ email });
@@ -22,7 +23,7 @@ const login = async (email: string, password: string): Promise<UserDTO> => {
 
 const register = async (userDTO: UserDTO): Promise<boolean> => {
   if (!userDTO.password) {
-    throw new BadRequestError('Please enter the passord');
+    throw new BadRequestError('Please enter the password');
   }
   const passwordHash = await genPasswordHash(userDTO.password);
 
@@ -36,6 +37,7 @@ const register = async (userDTO: UserDTO): Promise<boolean> => {
     ...userDTO,
     password: passwordHash,
     authProvider: 'local',
+    gender: parseGender(userDTO.gender),
   });
   if (!user) {
     throw new BadRequestError('Unable to register. Please try again');

@@ -3,8 +3,8 @@ import authRouter from './auth.route';
 // import channelSubscriptionRouter from './channel-subscription.route';
 // import videoRouter from './video.route';
 // import channelRouter from './channel.route';
-// import userRouter from './user.route';
-import watchHistoryRouter from './watch-history.route';
+import userRouter from './user.route';
+// import watchHistoryRouter from './watch-history.route';
 
 const apiRouter = Router();
 
@@ -16,9 +16,8 @@ apiRouter.use('/auth', authRouter);
 
 // apiRouter.use('/video', videoRouter);
 
-// apiRouter.use('/user', userRouter);
+apiRouter.use('/user', userRouter);
 
-
-apiRouter.use('/watch-history', watchHistoryRouter);
+// apiRouter.use('/watch-history', watchHistoryRouter);
 
 export default apiRouter;

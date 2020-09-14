@@ -1,21 +1,72 @@
 import { Request, Response } from 'express';
+import UserService from '../service/user.service';
+import {
+  CreateUserResponse,
+  DeleteUserResponse,
+  GetAllUserResponse,
+  GetUserByIdResponse,
+  UpdateUserResponse,
+} from '../types/api/user-api';
+import { UserDTO } from '../types/user';
 
-export const createUser = (req: Request, res: Response): void => {
-  res.send('Get All User');
+const createUser = async (
+  req: Request<null, null, UserDTO>,
+  res: Response<CreateUserResponse>,
+): Promise<void> => {
+  const userDTO = req.body;
+  const user = await UserService.createUser(userDTO);
+  res.status(200).json({
+    message: 'User created',
+    user,
+  });
 };
 
-export const updateUser = (req: Request, res: Response): void => {
-  res.send('Get All User');
+const updateUser = async (
+  req: Request<null, null, UserDTO>,
+  res: Response<UpdateUserResponse>,
+): Promise<void> => {
+  const userDTO = req.body;
+  const user = await UserService.updateUser(userDTO);
+  res.status(200).json({
+    message: 'User created',
+    user,
+  });
 };
 
-export const getUserById = (req: Request, res: Response): void => {
-  res.send('Get User');
+const getUserById = async (req: Request, res: Response<GetUserByIdResponse>): Promise<void> => {
+  const { id } = req.params;
+  const user = await UserService.getUserById(id);
+  res.status(200).json({
+    user,
+  });
 };
 
-export const getAllUser = (req: Request, res: Response): void => {
-  res.send('Get All User');
+const getAllUser = async (req: Request, res: Response<GetAllUserResponse>): Promise<void> => {
+  const users = await UserService.getAllUser({ page: 0, size: 10 });
+  const count = await UserService.getAllUserCount({ page: 0, size: 10 });
+  res.status(200).json({
+    users,
+    count,
+  });
 };
 
-export const deleteUser = (req: Request, res: Response): void => {
-  res.send('Get All User');
+const deleteUser = async (
+  req: Request<null, null, UserDTO>,
+  res: Response<DeleteUserResponse>,
+): Promise<void> => {
+  const user = req.body;
+  await UserService.deleteUser(user);
+  res.status(200).json({
+    message: 'User deleted',
+  });
 };
+
+const UserController = {
+  createUser,
+  updateUser,
+  getUserById,
+  getAllUser,
+  deleteUser,
+};
+
+export default UserController;

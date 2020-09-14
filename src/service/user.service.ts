@@ -1,47 +1,67 @@
-import UserModel, { IUser } from '../models/user.model';
+import UserModel from '../models/user.model';
+import { UserDTO } from '../types/user';
+import { parseGender } from '../util/gender.util';
+import UserDTOUtil from '../util/UserDTO.util';
 
-export const createUser = async (user: IUser): Promise<IUser> => {
-  const newUser = await UserModel.create({ ...user });
-  return newUser;
+const createUser = async (userDTO: UserDTO): Promise<UserDTO> => {
+  const newUser = await UserModel.create({
+    ...userDTO,
+    password: 'test',
+    gender: parseGender(userDTO.gender),
+    authProvider: 'local',
+  });
+  return UserDTOUtil.fromIUser(newUser);
 };
 
-export const updateUser = async (user: IUser): Promise<IUser> => {
-  const userInDB = await UserModel.findOneAndUpdate({ _id: user._id }, { ...user });
+const updateUser = async (userDTO: UserDTO): Promise<UserDTO> => {
+  const userInDB = await UserModel.findOneAndUpdate(
+    { _id: userDTO.id },
+    { ...userDTO, gender: parseGender(userDTO.gender) },
+  );
   if (!userInDB) {
     throw Error('Unable to update user');
   }
-  return userInDB;
+  return getUserById(userInDB.id);
 };
 
-export const deleteUser = async (user: IUser): Promise<void> => {
-  const userInDB = await UserModel.findOneAndUpdate({ _id: user._id }, { deleted: true });
+const deleteUser = async (user: UserDTO): Promise<void> => {
+  const userInDB = await UserModel.findOneAndUpdate({ _id: user.id }, { deleted: true });
   if (!userInDB) {
     throw Error('Unable to delete user');
   }
 };
 
-export const getUserById = async (id: string): Promise<IUser> => {
+const getUserById = async (id: string): Promise<UserDTO> => {
   const user = await UserModel.findById(id);
   if (!user) {
     throw Error('User Not found');
   }
-  return user;
+  return UserDTOUtil.fromIUser(user);
 };
 
 interface QueryOptions {
   page: number;
   size: number;
 }
-interface GetAllUserResponse {
-  count: number;
-  users: IUser[];
-}
 
-export const getAllUser = async (options: QueryOptions): Promise<GetAllUserResponse> => {
+const getAllUser = async (options: QueryOptions): Promise<UserDTO[]> => {
   const users = await UserModel.find();
-  const count = await UserModel.count({});
-  return {
-    count,
-    users,
-  };
+
+  return users.map((user) => UserDTOUtil.fromIUser(user));
 };
+
+const getAllUserCount = async (options: QueryOptions): Promise<number> => {
+  const count = await UserModel.count({});
+  return count;
+};
+
+const UserService = {
+  createUser,
+  updateUser,
+  deleteUser,
+  getUserById,
+  getAllUser,
+  getAllUserCount,
+};
+
+export default UserService;

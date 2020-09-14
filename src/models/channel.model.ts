@@ -6,9 +6,9 @@ const channelSchema = new Schema(
   {
     name: { type: SchemaTypes.String, required: true, maxlength: 20 },
     description: { type: SchemaTypes.String, required: true },
-    coverImageUrl: { type: SchemaTypes.String, required: true },
-    imageUrl: { type: SchemaTypes.String, required: true },
-    active: { type: SchemaTypes.Boolean, required: true, default: true },
+    coverImageUrl: { type: SchemaTypes.String },
+    imageUrl: { type: SchemaTypes.String },
+    active: { type: SchemaTypes.Boolean, default: true },
     createdDate: { type: SchemaTypes.Date, default: Date.now },
     createdBy: { type: SchemaTypes.ObjectId, required: true },
     updatedDate: { type: SchemaTypes.Date, default: Date.now },
