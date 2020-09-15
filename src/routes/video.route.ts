@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import VideoController from '../controllers/video.controller';
-import { wrapAsyncError } from '../helper/error.helper';
+import { wrapAsyncError } from '../helper/error';
 
 const videoRouter = Router();
 

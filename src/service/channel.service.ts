@@ -1,4 +1,4 @@
-import { BadRequestError } from '../helper/error.helper';
+import { BadRequestError } from '../helper/error';
 import ChannelModel from '../models/channel.model';
 import { ChannelDTO } from '../types/dto/channel';
 import ChannelDTOUtil from '../util/ChannelDTO.util';

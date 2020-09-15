@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { DatabaseError } from '../helper/error.helper';
+import { DatabaseError } from '../helper/error';
 
 export default function initDatabase(): void {
   const DB_NAME = process.env.DB_NAME;

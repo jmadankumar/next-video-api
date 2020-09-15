@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { wrapAsyncError } from '../helper/error.helper';
-import { generateToken } from '../helper/jwt.helper';
+import { wrapAsyncError } from '../helper/error';
+import { generateToken } from '../helper/jwt';
 import AuthService from '../service/auth.service';
 import { LoginRequest, LoginResponse, RegisterRequest, RegisterResponse } from '../types/api/auth-api';
 

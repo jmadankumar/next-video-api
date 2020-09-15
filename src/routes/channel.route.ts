@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import ChannelController from '../controllers/channel.controller';
-import { wrapAsyncError } from '../helper/error.helper';
+import { wrapAsyncError } from '../helper/error';
 
 const channelRouter = Router();
 

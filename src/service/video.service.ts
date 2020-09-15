@@ -1,4 +1,4 @@
-import { BadRequestError } from '../helper/error.helper';
+import { BadRequestError } from '../helper/error';
 import VideoModel from '../models/video.model';
 import { VideoDTO } from '../types/dto/video';
 import VideoDTOUtil from '../util/VideoDTO.util';

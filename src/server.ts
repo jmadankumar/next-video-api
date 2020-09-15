@@ -6,7 +6,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import initDatabase from './config/db';
 import apiRouter from './routes';
-import { errorHandler } from './helper/error.helper';
+import { errorHandler } from './helper/error';
 
 const PORT = process.env.PORT || 8081;
 const app = express();

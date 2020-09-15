@@ -53,7 +53,7 @@ const videoSchema = new Schema(
       type: String,
       required: true,
     },
-    supprtedQuality: {
+    supportedQuality: {
       type: Array,
       required: true,
     }, // list of quality 240, required: true }, 320, required: true }, 480, required: true }, 720, required: true }, 1080
