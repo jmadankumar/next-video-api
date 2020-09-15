@@ -1,13 +1,11 @@
 import { Request, Response } from 'express';
 import ChannelService from '../service/channel.service';
-import {
-  CreateChannelResponse,
-  DeleteChannelResponse,
-  GetAllChannelResponse,
-  GetChannelByIdResponse,
-  UpdateChannelResponse,
-} from '../types/api/channel-api';
-import { ChannelDTO } from '../types/dto/channel';
+import { ChannelDTO } from '../types/channel';
+
+interface CreateChannelResponse {
+  message: string;
+  channel: ChannelDTO;
+}
 
 export const createChannel = async (
   req: Request<null, null, ChannelDTO>,
@@ -21,6 +19,11 @@ export const createChannel = async (
   });
 };
 
+interface UpdateChannelResponse {
+  message: string;
+  channel: ChannelDTO;
+}
+
 export const updateChannel = async (
   req: Request<null, null, ChannelDTO>,
   res: Response<UpdateChannelResponse>,
@@ -33,6 +36,10 @@ export const updateChannel = async (
   });
 };
 
+interface GetChannelByIdResponse {
+  channel: ChannelDTO;
+}
+
 export const getChannelById = async (
   req: Request,
   res: Response<GetChannelByIdResponse>,
@@ -41,6 +48,11 @@ export const getChannelById = async (
   const channel = await ChannelService.getChannelById(id);
   res.status(200).json({ channel });
 };
+
+interface GetAllChannelResponse {
+  channels: ChannelDTO[];
+  count: number;
+}
 
 export const getAllChannel = async (
   req: Request,
@@ -53,6 +65,10 @@ export const getAllChannel = async (
     count,
   });
 };
+
+interface DeleteChannelResponse {
+  message: string;
+}
 
 export const deleteChannel = async (
   req: Request<null, null, ChannelDTO>,

@@ -1,7 +1,7 @@
 import { BadRequestError } from '../helper/error';
 import VideoModel from '../models/video.model';
-import { VideoDTO } from '../types/dto/video';
-import VideoDTOUtil from '../util/VideoDTO.util';
+import { VideoDTO } from '../types/video';
+import VideoDTOUtil from '../util/video.util';
 
 const createVideo = async (videoDTO: VideoDTO): Promise<VideoDTO> => {
   if (videoDTO.id) {

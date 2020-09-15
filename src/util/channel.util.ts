@@ -1,5 +1,5 @@
-import { ChannelDTO } from '../types/dto/channel';
-import { IChannel } from '../types/model/channel-model';
+import { ChannelDTO } from '../types/channel';
+import { IChannel } from '../models/channel.model';
 
 const fromIChannel = (channel: IChannel): ChannelDTO => {
   const {

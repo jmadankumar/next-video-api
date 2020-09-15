@@ -1,5 +1,59 @@
-import { Types, Schema, model } from 'mongoose';
-import { IVideo } from '../types/model/video-model';
+import { Types, Schema, model, Document } from 'mongoose';
+import { IUser } from './user.model';
+
+interface IVideoChunk {
+  quality: string;
+  sequenceNo: number;
+  chunkUrl: string;
+  contentLength: number;
+}
+interface IVideoSchema extends Document {
+  userId: string;
+  channelId: string;
+  title: string;
+  description: string;
+  thumbnailUrl: string;
+  videoUrl: string;
+  tags: Array<string>;
+  category: string;
+  totalChunk: number;
+  chunkDetail: IVideoChunk[];
+  duration: number;
+  mimeType: string;
+  codec: string;
+  supprtedQuality: Array<string>;
+  isLive: boolean;
+  liveStartDate: Date;
+  liveEndDate: Date;
+  createdBy: string;
+  createdDate?: Date;
+  updatedBy: string;
+  updatedDate?: Date;
+  deleted?: boolean;
+}
+
+export interface IVideo extends IVideoSchema {
+  getUser(): IUser;
+}
+
+const videoChunkSchema = new Schema({
+  quality: {
+    type: String,
+    required: true,
+  },
+  sequenceNo: {
+    type: Number,
+    required: true,
+  },
+  chunkUrl: {
+    type: String,
+    required: true,
+  },
+  contentLength: {
+    type: Number,
+    required: true,
+  },
+});
 
 const videoSchema = new Schema(
   {
@@ -41,6 +95,7 @@ const videoSchema = new Schema(
       type: Number,
       required: true,
     },
+    chunkDetail: [videoChunkSchema],
     duration: {
       type: Number,
       required: true,

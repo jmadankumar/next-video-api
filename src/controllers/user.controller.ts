@@ -1,13 +1,11 @@
 import { Request, Response } from 'express';
 import UserService from '../service/user.service';
-import {
-  CreateUserResponse,
-  DeleteUserResponse,
-  GetAllUserResponse,
-  GetUserByIdResponse,
-  UpdateUserResponse,
-} from '../types/api/user-api';
-import { UserDTO } from '../types/dto/user';
+import { UserDTO } from '../types/user';
+
+interface CreateUserResponse {
+  message: string;
+  user: UserDTO;
+}
 
 const createUser = async (
   req: Request<null, null, UserDTO>,
@@ -21,6 +19,11 @@ const createUser = async (
   });
 };
 
+interface UpdateUserResponse {
+  message: string;
+  user: UserDTO;
+}
+
 const updateUser = async (
   req: Request<null, null, UserDTO>,
   res: Response<UpdateUserResponse>,
@@ -33,6 +36,10 @@ const updateUser = async (
   });
 };
 
+interface GetUserByIdResponse {
+  user: UserDTO;
+}
+
 const getUserById = async (req: Request, res: Response<GetUserByIdResponse>): Promise<void> => {
   const { id } = req.params;
   const user = await UserService.getUserById(id);
@@ -40,6 +47,11 @@ const getUserById = async (req: Request, res: Response<GetUserByIdResponse>): Pr
     user,
   });
 };
+
+interface GetAllUserResponse {
+  count: number;
+  users: UserDTO[];
+}
 
 const getAllUser = async (req: Request, res: Response<GetAllUserResponse>): Promise<void> => {
   const users = await UserService.getAllUser({ page: 0, size: 10 });
@@ -49,6 +61,11 @@ const getAllUser = async (req: Request, res: Response<GetAllUserResponse>): Prom
     count,
   });
 };
+
+interface DeleteUserResponse {
+  message: string;
+}
+
 
 const deleteUser = async (
   req: Request<null, null, UserDTO>,

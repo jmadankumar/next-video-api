@@ -1,5 +1,5 @@
-import { VideoDTO } from '../types/dto/video';
-import { IVideo } from '../types/model/video-model';
+import { VideoDTO } from '../types/video';
+import { IVideo } from '../models/video.model';
 
 const fromIVideo = (video: IVideo): VideoDTO => {
   const {
@@ -25,6 +25,7 @@ const fromIVideo = (video: IVideo): VideoDTO => {
     updatedBy,
     updatedDate,
     deleted,
+    chunkDetail,
   } = video;
   return {
     id,
@@ -49,6 +50,7 @@ const fromIVideo = (video: IVideo): VideoDTO => {
     updatedBy,
     updatedDate,
     deleted,
+    chunkDetail,
   };
 };
 

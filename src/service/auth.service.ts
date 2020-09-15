@@ -1,8 +1,8 @@
 import { comparePasswordHash, genPasswordHash } from '../helper/auth';
 import UserModel from '../models/user.model';
 import { AccessDeniedError, BadRequestError } from '../helper/error';
-import { UserDTO } from '../types/dto/user';
-import UserDTOUtil from '../util/UserDTO.util';
+import { UserDTO } from '../types/user';
+import UserDTOUtil from '../util/user.util';
 import { parseGender } from '../util/gender.util';
 
 const login = async (email: string, password: string): Promise<UserDTO> => {

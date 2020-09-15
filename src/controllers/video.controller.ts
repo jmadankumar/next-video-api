@@ -1,15 +1,13 @@
 import { Request, Response } from 'express';
 import VideoService from '../service/video.service';
-import {
-  CreateVideoResponse,
-  DeleteVideoResponse,
-  GetAllVideoResponse,
-  GetVideoByIdResponse,
-  UpdateVideoResponse,
-} from '../types/api/video-api';
-import { VideoDTO } from '../types/dto/video';
+import { VideoDTO } from '../types/video';
 
-export const createVideo = async (
+interface CreateVideoResponse {
+  message: string;
+  video: VideoDTO;
+}
+
+const createVideo = async (
   req: Request<null, null, VideoDTO>,
   res: Response<CreateVideoResponse>,
 ): Promise<void> => {
@@ -21,7 +19,12 @@ export const createVideo = async (
   });
 };
 
-export const updateVideo = async (
+interface UpdateVideoResponse {
+  message: string;
+  video: VideoDTO;
+}
+
+const updateVideo = async (
   req: Request<null, null, VideoDTO>,
   res: Response<UpdateVideoResponse>,
 ): Promise<void> => {
@@ -33,19 +36,22 @@ export const updateVideo = async (
   });
 };
 
-export const getVideoById = async (
-  req: Request,
-  res: Response<GetVideoByIdResponse>,
-): Promise<void> => {
+interface GetVideoByIdResponse {
+  video: VideoDTO;
+}
+
+const getVideoById = async (req: Request, res: Response<GetVideoByIdResponse>): Promise<void> => {
   const { id } = req.params;
   const video = await VideoService.getVideoById(id);
   res.status(200).json({ video });
 };
 
-export const getAllVideo = async (
-  req: Request,
-  res: Response<GetAllVideoResponse>,
-): Promise<void> => {
+interface GetAllVideoResponse {
+  videos: VideoDTO[];
+  count: number;
+}
+
+const getAllVideo = async (req: Request, res: Response<GetAllVideoResponse>): Promise<void> => {
   const videos = await VideoService.getAllVideo({ page: 0, size: 20 });
   const count = await VideoService.getAllVideoCount({ page: 0, size: 20 });
   res.status(200).json({
@@ -54,7 +60,11 @@ export const getAllVideo = async (
   });
 };
 
-export const deleteVideo = async (
+interface DeleteVideoResponse {
+  message: string;
+}
+
+const deleteVideo = async (
   req: Request<null, null, VideoDTO>,
   res: Response<DeleteVideoResponse>,
 ): Promise<void> => {

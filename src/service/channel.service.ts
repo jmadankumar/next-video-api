@@ -1,7 +1,7 @@
 import { BadRequestError } from '../helper/error';
 import ChannelModel from '../models/channel.model';
-import { ChannelDTO } from '../types/dto/channel';
-import ChannelDTOUtil from '../util/ChannelDTO.util';
+import { ChannelDTO } from '../types/channel';
+import ChannelDTOUtil from '../util/channel.util';
 
 const createChannel = async (channelDTO: ChannelDTO): Promise<ChannelDTO> => {
   if (channelDTO.id) {

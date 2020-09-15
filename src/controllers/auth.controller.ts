@@ -2,7 +2,18 @@ import { Request, Response } from 'express';
 import { wrapAsyncError } from '../helper/error';
 import { generateToken } from '../helper/jwt';
 import AuthService from '../service/auth.service';
-import { LoginRequest, LoginResponse, RegisterRequest, RegisterResponse } from '../types/api/auth-api';
+import { UserDTO } from '../types/user';
+
+interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+interface LoginResponse {
+  message: string;
+  user: UserDTO;
+  token: string;
+}
 
 const login = wrapAsyncError(
   async (req: Request<null, LoginResponse, LoginRequest>, res: Response<LoginResponse>) => {
@@ -10,14 +21,22 @@ const login = wrapAsyncError(
     const user = await AuthService.login(email, password);
     const token = generateToken(user);
 
-    res.cookie('authentication_token',token);
+    res.cookie('authentication_token', token);
     res.status(200).json({
       message: 'Login successfull',
       user,
-      token
+      token,
     });
   },
 );
+
+interface RegisterRequest {
+  data: UserDTO;
+}
+
+interface RegisterResponse {
+  message: string;
+}
 
 const register = wrapAsyncError(
   async (

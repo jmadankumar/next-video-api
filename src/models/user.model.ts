@@ -1,8 +1,29 @@
-import mongoose from 'mongoose';
+import { Document, model, Schema, Types } from 'mongoose';
 import { Gender } from '../enum';
-import { IUser } from '../types/model/user-model';
 
-const { Schema, Types } = mongoose;
+interface IUserSchema extends Document {
+  email: string;
+  password: string;
+  name: string;
+  authProvider: 'local' | 'google';
+  gender: Gender;
+  dob: Date;
+  imageUrl: string;
+  resetToken?: string;
+  resetTokenDate?: Date;
+  activationToken?: string;
+  activationTokenDate?: Date;
+  active?: boolean;
+  createdDate?: Date;
+  createdBy?: string;
+  updatedDate?: Date;
+  updatedBy?: string;
+  deleted?: boolean;
+}
+
+export interface IUser extends IUserSchema {
+  getGender(): string;
+}
 
 // Reference:https://medium.com/@agentwhs/complete-guide-for-typescript-for-mongoose-for-node-js-8cc0a7e470c1
 
@@ -88,6 +109,6 @@ UserSchema.methods.getGender = function () {
   return Gender[this.gender];
 };
 
-const UserModel = mongoose.model<IUser>('User', UserSchema);
+const UserModel = model<IUser>('User', UserSchema);
 
 export default UserModel;

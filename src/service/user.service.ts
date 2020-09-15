@@ -1,7 +1,7 @@
 import UserModel from '../models/user.model';
-import { UserDTO } from '../types/dto/user';
+import { UserDTO } from '../types/user';
 import { parseGender } from '../util/gender.util';
-import UserDTOUtil from '../util/UserDTO.util';
+import UserDTOUtil from '../util/user.util';
 
 const createUser = async (userDTO: UserDTO): Promise<UserDTO> => {
   const newUser = await UserModel.create({

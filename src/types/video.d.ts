@@ -1,3 +1,10 @@
+export interface VideoChunkDTO {
+  quality: string;
+  sequenceNo: number;
+  chunkUrl: string;
+  contentLength: number;
+}
+
 export interface VideoDTO {
   id: string;
   userId: string;
@@ -9,6 +16,7 @@ export interface VideoDTO {
   tags: Array<string>;
   category: string;
   totalChunk: number;
+  chunkDetail: VideoChunkDTO[];
   duration: number;
   mimeType: string;
   codec: string;
