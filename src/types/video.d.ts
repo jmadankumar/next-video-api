@@ -1,3 +1,5 @@
+import { ChannelDTO } from './channel';
+
 export interface VideoChunkDTO {
   quality: string;
   sequenceNo: number;
@@ -8,7 +10,7 @@ export interface VideoChunkDTO {
 export interface VideoDTO {
   id: string;
   userId: string;
-  channelId: string;
+  channel: ChannelDTO;
   title: string;
   description: string;
   thumbnailUrl: string;

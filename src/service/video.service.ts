@@ -1,5 +1,5 @@
 import { BadRequestError } from '../helper/error';
-import VideoModel from '../models/video.model';
+import VideoModel, { IVideoPopulated } from '../models/video.model';
 import { VideoDTO } from '../types/video';
 import VideoDTOUtil from '../util/video.util';
 
@@ -7,19 +7,22 @@ const createVideo = async (videoDTO: VideoDTO): Promise<VideoDTO> => {
   if (videoDTO.id) {
     return updateVideo(videoDTO);
   }
-  const video = await VideoModel.create({ ...videoDTO });
+  const video = await VideoModel.create({ ...videoDTO, channel: videoDTO.channel.id });
 
   if (!video) {
     throw new BadRequestError('Unable to create video');
   }
-  return VideoDTOUtil.fromIVideo(video);
+  return getVideoById(video.id);
 };
 
 const updateVideo = async (videoDTO: VideoDTO): Promise<VideoDTO> => {
   if (!videoDTO.id) {
     throw new BadRequestError('Video not found');
   }
-  const videoInDB = await VideoModel.findOneAndUpdate({ _id: videoDTO.id }, { ...videoDTO });
+  const videoInDB = await VideoModel.findOneAndUpdate(
+    { _id: videoDTO.id },
+    { ...videoDTO, channel: videoDTO.channel.id },
+  );
   if (!videoDTO) {
     throw new BadRequestError('Unable to update the Video ');
   }
@@ -34,7 +37,14 @@ const deleteVideo = async (videoDTO: VideoDTO): Promise<void> => {
 };
 
 const getVideoById = async (id: string): Promise<VideoDTO> => {
-  const videoInDB = await VideoModel.findById(id);
+  const videoInDB = (await VideoModel.findById(id)
+    .populate('channel')
+    .exec((error: any, video: any) => {
+      if (error) {
+        throw error;
+      }
+      return video;
+    })) as IVideoPopulated;
   if (!videoInDB) {
     throw new BadRequestError('Video not found');
   }
@@ -46,7 +56,13 @@ interface QueryOption {
   size: number;
 }
 const getAllVideo = async (option: QueryOption): Promise<VideoDTO[]> => {
-  const videos = await VideoModel.find({});
+  const videos = (await VideoModel.find({})
+    .populate('channel')
+    .exec()
+    .then((videos: any) => {
+      return videos;
+    })) as IVideoPopulated[];
+  console.log(videos);
   return videos.map((video) => VideoDTOUtil.fromIVideo(video));
 };
 

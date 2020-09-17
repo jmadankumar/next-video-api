@@ -1,4 +1,5 @@
 import { Types, Schema, model, Document } from 'mongoose';
+import { IChannel } from './channel.model';
 import { IUser } from './user.model';
 
 interface IVideoChunk {
@@ -9,7 +10,6 @@ interface IVideoChunk {
 }
 interface IVideoSchema extends Document {
   userId: string;
-  channelId: string;
   title: string;
   description: string;
   thumbnailUrl: string;
@@ -32,8 +32,15 @@ interface IVideoSchema extends Document {
   deleted?: boolean;
 }
 
-export interface IVideo extends IVideoSchema {
+interface IVideoBase extends IVideoSchema {
   getUser(): IUser;
+}
+export interface IVideo extends IVideoBase {
+  channel: IChannel['_id'];
+}
+
+export interface IVideoPopulated extends IVideoBase {
+  channel: IChannel;
 }
 
 const videoChunkSchema = new Schema({
@@ -61,8 +68,9 @@ const videoSchema = new Schema(
       type: Types.ObjectId,
       required: true,
     },
-    channelId: {
+    channel: {
       type: Types.ObjectId,
+      ref: 'Channel',
       required: true,
     },
     title: {

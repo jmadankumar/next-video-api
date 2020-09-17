@@ -1,7 +1,7 @@
 import { ChannelDTO } from '../types/channel';
 import { IChannel } from '../models/channel.model';
 
-const fromIChannel = (channel: IChannel): ChannelDTO => {
+const fromIChannel = (channel: IChannel ): ChannelDTO => {
   const {
     _id: id,
     name,

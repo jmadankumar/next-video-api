@@ -1,11 +1,12 @@
 import { VideoDTO } from '../types/video';
-import { IVideo } from '../models/video.model';
+import { IVideoPopulated } from '../models/video.model';
+import ChannelDTOUtil from './channel.util';
 
-const fromIVideo = (video: IVideo): VideoDTO => {
+const fromIVideo = (video: IVideoPopulated): VideoDTO => {
   const {
     _id: id,
     userId,
-    channelId,
+    channel,
     title,
     description,
     thumbnailUrl,
@@ -30,7 +31,7 @@ const fromIVideo = (video: IVideo): VideoDTO => {
   return {
     id,
     userId,
-    channelId,
+    channel: ChannelDTOUtil.fromIChannel(channel),
     title,
     description,
     thumbnailUrl,
