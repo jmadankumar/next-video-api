@@ -39,10 +39,8 @@ const deleteVideo = async (videoDTO: VideoDTO): Promise<void> => {
 const getVideoById = async (id: string): Promise<VideoDTO> => {
   const videoInDB = (await VideoModel.findById(id)
     .populate('channel')
-    .exec((error: any, video: any) => {
-      if (error) {
-        throw error;
-      }
+    .exec()
+    .then((video: any) => {
       return video;
     })) as IVideoPopulated;
   if (!videoInDB) {

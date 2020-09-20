@@ -15,7 +15,7 @@ initDatabase();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors());
+app.use(cors({ credentials: true, origin: ['http://localhost:3000'], preflightContinue: true }));
 
 app.use('/api', apiRouter);
 

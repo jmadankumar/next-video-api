@@ -21,7 +21,7 @@ const login = wrapAsyncError(
     const user = await AuthService.login(email, password);
     const token = generateToken(user);
 
-    res.cookie('authentication_token', token);
+    res.cookie('authentication_token', token, { httpOnly: true });
     res.status(200).json({
       message: 'Login successfull',
       user,
