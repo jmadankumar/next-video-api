@@ -60,7 +60,6 @@ const getAllVideo = async (option: QueryOption): Promise<VideoDTO[]> => {
     .then((videos: any) => {
       return videos;
     })) as IVideoPopulated[];
-  console.log(videos);
   return videos.map((video) => VideoDTOUtil.fromIVideo(video));
 };
 

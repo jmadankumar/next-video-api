@@ -52,9 +52,21 @@ const register = wrapAsyncError(
   },
 );
 
+interface LogoutResponse {
+  message: string;
+}
+
+const logout = wrapAsyncError(async (req: Request, res: Response<LogoutResponse>) => {
+  res.clearCookie('authentication_token');
+  res.status(200).json({
+    message: 'Logout successfully',
+  });
+});
+
 const AuthController = {
   login,
   register,
+  logout,
 };
 
 export default AuthController;

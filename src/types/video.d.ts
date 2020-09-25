@@ -22,7 +22,7 @@ export interface VideoDTO {
   duration: number;
   mimeType: string;
   codec: string;
-  supprtedQuality: Array<string>;
+  supportedQuality: Array<string>;
   isLive: boolean;
   liveStartDate: Date;
   liveEndDate: Date;
