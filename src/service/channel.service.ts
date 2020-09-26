@@ -45,11 +45,17 @@ const getChannelById = async (id: string): Promise<ChannelDTO> => {
 };
 
 interface QueryOption {
-  page: number;
-  size: number;
+  query?: string;
+  page?: number;
+  size?: number;
 }
 const getAllChannel = async (option: QueryOption): Promise<ChannelDTO[]> => {
-  const channels = await ChannelModel.find({});
+  const { query = '', page = 1, size = 10 } = option;
+  const channels = await ChannelModel.find({
+    name: { $regex: query, $options: 'i' },
+  })
+    .skip((page - 1) * size)
+    .limit(size);
   return channels.map((channel) => ChannelDTOUtil.fromIChannel(channel));
 };
 

@@ -8,7 +8,7 @@ interface IUserSchema extends Document {
   authProvider: 'local' | 'google';
   gender: Gender;
   dob: Date;
-  imageUrl: string;
+  imageUrl?: string;
   resetToken?: string;
   resetTokenDate?: Date;
   activationToken?: string;
@@ -59,7 +59,6 @@ const UserSchema = new Schema(
     },
     imageUrl: {
       type: String,
-      required: true,
     },
     resetToken: {
       type: String,

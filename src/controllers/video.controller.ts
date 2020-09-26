@@ -51,9 +51,18 @@ interface GetAllVideoResponse {
   count: number;
 }
 
-const getAllVideo = async (req: Request, res: Response<GetAllVideoResponse>): Promise<void> => {
-  const videos = await VideoService.getAllVideo({ page: 0, size: 20 });
-  const count = await VideoService.getAllVideoCount({ page: 0, size: 20 });
+interface GetAllVideoQuery {
+  query: string;
+  offset: number;
+  limit: number;
+}
+const getAllVideo = async (
+  req: Request<any, any, any, GetAllVideoQuery>,
+  res: Response<GetAllVideoResponse>,
+): Promise<void> => {
+  const { query, offset, limit } = req.query;
+  const videos = await VideoService.getAllVideo({ offset, limit });
+  const count = await VideoService.getAllVideoCount({ offset, limit });
   res.status(200).json({
     videos,
     count,

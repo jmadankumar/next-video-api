@@ -50,11 +50,16 @@ const getVideoById = async (id: string): Promise<VideoDTO> => {
 };
 
 interface QueryOption {
-  page: number;
-  size: number;
+  query?: string;
+  offset?: number;
+  limit?: number;
 }
 const getAllVideo = async (option: QueryOption): Promise<VideoDTO[]> => {
-  const videos = (await VideoModel.find({})
+  const { query = '', offset = 0, limit = 10 } = option;
+
+  const videos = (await VideoModel.find({ title: { $regex: query, $options: 'i' } })
+    .skip(offset)
+    .limit(limit)
     .populate('channel')
     .exec()
     .then((videos: any) => {
@@ -64,7 +69,11 @@ const getAllVideo = async (option: QueryOption): Promise<VideoDTO[]> => {
 };
 
 const getAllVideoCount = async (option: QueryOption): Promise<number> => {
-  const count = await VideoModel.count({});
+  const { query = '', offset = 0, limit = 10 } = option;
+  const count = await VideoModel.countDocuments({ title: { $regex: query, $options: 'i' } })
+    .skip(offset)
+    .limit(limit)
+    .count();
   return count;
 };
 

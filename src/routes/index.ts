@@ -6,6 +6,7 @@ import channelRouter from './channel.route';
 import userRouter from './user.route';
 import loggedUserRouter from './logged-user.route';
 import { authorizeUser } from '../middleware/auth.middleware';
+import searchRouter from './search.route';
 // import watchHistoryRouter from './watch-history.route';
 
 const apiRouter = Router();
@@ -23,5 +24,7 @@ apiRouter.use('/user', userRouter);
 // apiRouter.use('/watch-history', watchHistoryRouter);
 
 apiRouter.use('/me', authorizeUser, loggedUserRouter);
+
+apiRouter.use('/search', searchRouter);
 
 export default apiRouter;

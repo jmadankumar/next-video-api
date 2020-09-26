@@ -4,6 +4,6 @@ export interface UserDTO {
   name: string;
   gender: string;
   dob: Date;
-  imageUrl: string;
+  imageUrl?: string;
   password?: string;
 }
