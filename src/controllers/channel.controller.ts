@@ -54,12 +54,18 @@ interface GetAllChannelResponse {
   count: number;
 }
 
+interface GetAllChannelQuery {
+  query?: string;
+  offset?: number;
+  limit?: number;
+}
 export const getAllChannel = async (
-  req: Request,
+  req: Request<any, any, any, GetAllChannelQuery>,
   res: Response<GetAllChannelResponse>,
 ): Promise<void> => {
-  const channels = await ChannelService.getAllChannel({ page: 0, size: 20 });
-  const count = await ChannelService.getAllChannelCount({ page: 0, size: 20 });
+  const { query, offset, limit } = req.query;
+  const channels = await ChannelService.getAllChannel({ query, offset, limit });
+  const count = await ChannelService.getAllChannelCount({ query, offset, limit });
   res.status(200).json({
     channels,
     count,

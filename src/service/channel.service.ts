@@ -38,7 +38,7 @@ const deleteChannel = async (channelDTO: ChannelDTO): Promise<void> => {
 
 const getChannelById = async (id: string): Promise<ChannelDTO> => {
   const channelInDB = await ChannelModel.findById(id);
-  if (!channelInDB) {
+  if (!channelInDB || channelInDB.deleted) {
     throw new BadRequestError('Channel not found');
   }
   return ChannelDTOUtil.fromIChannel(channelInDB);
@@ -46,21 +46,27 @@ const getChannelById = async (id: string): Promise<ChannelDTO> => {
 
 interface QueryOption {
   query?: string;
-  page?: number;
-  size?: number;
+  offset?: number;
+  limit?: number;
 }
 const getAllChannel = async (option: QueryOption): Promise<ChannelDTO[]> => {
-  const { query = '', page = 1, size = 10 } = option;
+  const { query = '', offset = 1, limit = 10 } = option;
   const channels = await ChannelModel.find({
     name: { $regex: query, $options: 'i' },
   })
-    .skip((page - 1) * size)
-    .limit(size);
+    .skip(offset)
+    .limit(limit);
   return channels.map((channel) => ChannelDTOUtil.fromIChannel(channel));
 };
 
 const getAllChannelCount = async (option: QueryOption): Promise<number> => {
-  const count = await ChannelModel.count({});
+  const { query = '', offset = 1, limit = 10 } = option;
+  const count = await ChannelModel.countDocuments({
+    name: { $regex: query, $options: 'i' },
+  })
+    .skip(offset)
+    .limit(limit)
+    .count();
   return count;
 };
 

@@ -22,7 +22,7 @@ const getSearchResult = wrapAsyncError(
     res: Response<SearchResultResponse>,
   ) => {
     const { query, offset, limit } = req.query;
-    const channels = await ChannelService.getAllChannel({ query, page: 1, size: 3 });
+    const channels = await ChannelService.getAllChannel({ query, offset: 0, limit: 3 });
     const videos = await VideoService.getAllVideo({ query, offset, limit });
     res.status(200).json({
       channels,
