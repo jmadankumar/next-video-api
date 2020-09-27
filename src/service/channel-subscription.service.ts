@@ -11,7 +11,7 @@ import ChannelService from './channel.service';
 const subscribe = async (channelId: string, user: UserDTO): Promise<ChannelSubcriptionDTO> => {
   const channel = await ChannelService.getChannelById(channelId);
 
-  if(!channel){
+  if (!channel) {
     throw new BadRequestError('Channel Not Found');
   }
 
@@ -32,7 +32,7 @@ const subscribe = async (channelId: string, user: UserDTO): Promise<ChannelSubcr
     deleted: false,
   });
 
-  if (!channelSubscription) {
+  if (!newChannelSubscription) {
     throw new BadRequestError('Unable to subscribe. Please try again');
   }
 
@@ -69,6 +69,15 @@ const getAllChannelByUser = async (option: GetAllChannelByUserOption): Promise<C
   );
 };
 
-const ChannelSubscriptionService = { subscribe, getAllSubscriberByChannel, getAllChannelByUser };
+const getTotalSubscriberByChannel = async (channelId: string): Promise<number> => {
+  return await ChannelSubscriptionModel.count({ channel: channelId });
+};
+
+const ChannelSubscriptionService = {
+  subscribe,
+  getAllSubscriberByChannel,
+  getAllChannelByUser,
+  getTotalSubscriberByChannel,
+};
 
 export default ChannelSubscriptionService;

@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
+import ChannelSubscriptionService from '../service/channel-subscription.service';
 import ChannelService from '../service/channel.service';
+import VideoService from '../service/video.service';
 import { ChannelDTO } from '../types/channel';
 
 interface CreateChannelResponse {
@@ -46,6 +48,10 @@ export const getChannelById = async (
 ): Promise<void> => {
   const { id } = req.params;
   const channel = await ChannelService.getChannelById(id);
+  channel.subscribers = await ChannelSubscriptionService.getTotalSubscriberByChannel(channel.id);
+  channel.videos = await VideoService.getAllVideo({ channelId: channel.id, offset: 0, limit: 30 });
+  channel.totalVideo = await VideoService.getAllVideoCount({ channelId: channel.id });
+
   res.status(200).json({ channel });
 };
 

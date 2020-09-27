@@ -3,7 +3,7 @@ import { IUser } from './user.model';
 
 interface IChannelSchema extends Document {
   name: string;
-  description: string;
+  description?: string;
   coverImageUrl?: string;
   imageUrl?: string;
   active?: boolean;
@@ -28,7 +28,6 @@ const channelSchema = new Schema(
     },
     description: {
       type: String,
-      required: true,
     },
     coverImageUrl: {
       type: String,

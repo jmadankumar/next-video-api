@@ -21,7 +21,7 @@ const login = async (email: string, password: string): Promise<UserDTO> => {
   return UserDTOUtil.fromIUser(user);
 };
 
-const register = async (userDTO: UserDTO): Promise<boolean> => {
+const register = async (userDTO: UserDTO): Promise<UserDTO> => {
   if (!userDTO.password) {
     throw new BadRequestError('Please enter the password');
   }
@@ -39,10 +39,12 @@ const register = async (userDTO: UserDTO): Promise<boolean> => {
     authProvider: 'local',
     gender: parseGender(userDTO.gender),
   });
+
   if (!user) {
     throw new BadRequestError('Unable to register. Please try again');
   }
-  return true;
+
+  return UserDTOUtil.fromIUser(user);
 };
 
 const AuthService = {

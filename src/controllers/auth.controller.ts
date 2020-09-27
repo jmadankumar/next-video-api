@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import { wrapAsyncError } from '../helper/error';
 import { generateToken } from '../helper/jwt';
 import AuthService from '../service/auth.service';
+import ChannelService from '../service/channel.service';
+import UserService from '../service/user.service';
 import { UserDTO } from '../types/user';
 
 interface LoginRequest {
@@ -44,7 +46,18 @@ const register = wrapAsyncError(
     res: Response<RegisterResponse>,
   ) => {
     const { data } = req.body;
-    await AuthService.register(data);
+    const user = await AuthService.register(data);
+
+    const channel = await ChannelService.createChannel({
+      name: user.name,
+      ownerId: user.id,
+      createdBy: user.id,
+      updatedBy: user.id,
+    });
+
+    if (!channel) {
+      await UserService.removeUserFromDB(user.id);
+    }
 
     res.status(200).json({
       message: 'Registration Successfull',

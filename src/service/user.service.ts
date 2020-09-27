@@ -55,6 +55,10 @@ const getAllUserCount = async (options: QueryOptions): Promise<number> => {
   return count;
 };
 
+const removeUserFromDB = async (id: string): Promise<void> => {
+  await UserModel.findByIdAndDelete(id);
+};
+
 const UserService = {
   createUser,
   updateUser,
@@ -62,6 +66,7 @@ const UserService = {
   getUserById,
   getAllUser,
   getAllUserCount,
+  removeUserFromDB
 };
 
 export default UserService;
