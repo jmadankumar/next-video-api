@@ -63,7 +63,6 @@ const getAllChannelByUser = async (option: GetAllChannelByUserOption): Promise<C
   const channelSubscriptions = (await ChannelSubscriptionModel.find({ user: userId })
     .populate('channel')
     .then((results) => results)) as IChannelSubscriptionPopulated[];
-  console.log(channelSubscriptions);
   return channelSubscriptions.map((channelSubscription) =>
     ChannelDTOUtil.fromIChannel(channelSubscription.channel),
   );

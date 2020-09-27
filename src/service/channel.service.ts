@@ -70,6 +70,14 @@ const getAllChannelCount = async (option: QueryOption): Promise<number> => {
   return count;
 };
 
+const getChannelByOwner = async (userId: string): Promise<ChannelDTO> => {
+  const channelInDB = await ChannelModel.findOne({ ownerId: userId });
+  if (!channelInDB || channelInDB.deleted) {
+    throw new BadRequestError('Channel not found');
+  }
+  return ChannelDTOUtil.fromIChannel(channelInDB);
+};
+
 const ChannelService = {
   createChannel,
   updateChannel,
@@ -77,6 +85,7 @@ const ChannelService = {
   getChannelById,
   getAllChannel,
   getAllChannelCount,
+  getChannelByOwner
 };
 
 export default ChannelService;
