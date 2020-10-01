@@ -9,7 +9,6 @@ import { UserDTO } from '../types/user';
 
 interface GetMyDetailResponse {
   user: UserDTO;
-  subscriptions: ChannelDTO[];
 }
 const getProfileDetail = async (req: Request, res: Response<GetMyDetailResponse>) => {
   const currentUser: UserDTO = res.locals.user;
@@ -17,7 +16,8 @@ const getProfileDetail = async (req: Request, res: Response<GetMyDetailResponse>
   const subscriptions = await ChannelSubscriptionService.getAllChannelByUser({
     userId: currentUser.id,
   });
-  res.status(200).json({ user, subscriptions });
+  user.subscriptions = subscriptions;
+  res.status(200).json({ user });
 };
 
 interface GetMyChannelResponse {

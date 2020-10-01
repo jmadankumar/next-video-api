@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { wrapAsyncError } from '../helper/error';
 import { generateToken } from '../helper/jwt';
 import AuthService from '../service/auth.service';
+import ChannelSubscriptionService from '../service/channel-subscription.service';
 import ChannelService from '../service/channel.service';
 import UserService from '../service/user.service';
 import { UserDTO } from '../types/user';
@@ -21,6 +22,8 @@ const login = wrapAsyncError(
   async (req: Request<null, LoginResponse, LoginRequest>, res: Response<LoginResponse>) => {
     const { email, password } = req.body;
     const user = await AuthService.login(email, password);
+    const subscriptions = await ChannelSubscriptionService.getAllChannelByUser({ userId: user.id });
+    user.subscriptions = subscriptions;
     const token = generateToken(user);
 
     res.cookie('authentication_token', token, { httpOnly: true });

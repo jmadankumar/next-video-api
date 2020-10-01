@@ -1,3 +1,5 @@
+import { ChannelDTO } from "./channel";
+
 export interface UserDTO {
   id: string;
   email: string;
@@ -6,4 +8,5 @@ export interface UserDTO {
   dob: Date;
   imageUrl?: string;
   password?: string;
+  subscriptions?: ChannelDTO[];
 }
