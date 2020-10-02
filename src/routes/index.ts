@@ -7,6 +7,7 @@ import userRouter from './user.route';
 import loggedUserRouter from './logged-user.route';
 import { authorizeUser } from '../middleware/auth.middleware';
 import searchRouter from './search.route';
+import fileRouter from './file.route';
 // import watchHistoryRouter from './watch-history.route';
 
 const apiRouter = Router();
@@ -26,5 +27,7 @@ apiRouter.use('/user', userRouter);
 apiRouter.use('/me', authorizeUser, loggedUserRouter);
 
 apiRouter.use('/search', searchRouter);
+
+apiRouter.use('/file', fileRouter);
 
 export default apiRouter;

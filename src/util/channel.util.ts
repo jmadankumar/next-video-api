@@ -1,7 +1,7 @@
 import { ChannelDTO } from '../types/channel';
 import { IChannel } from '../models/channel.model';
 
-const fromIChannel = (channel: IChannel ): ChannelDTO => {
+const fromIChannel = (channel: IChannel): ChannelDTO => {
   const {
     _id: id,
     name,
@@ -12,7 +12,16 @@ const fromIChannel = (channel: IChannel ): ChannelDTO => {
     updatedBy,
     ownerId,
   } = channel;
-  return { id, name, description, coverImageUrl, imageUrl, createdBy, updatedBy, ownerId };
+  return {
+    id,
+    name,
+    description,
+    coverImageUrl: channel.getCoverImage(),
+    imageUrl: channel.getProfileImage(),
+    createdBy,
+    updatedBy,
+    ownerId,
+  };
 };
 
 const ChannelDTOUtil = {

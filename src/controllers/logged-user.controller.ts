@@ -1,5 +1,6 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { wrapAsyncError } from '../helper/error';
+import { saveFileContent } from '../helper/file';
 import ChannelSubscriptionService from '../service/channel-subscription.service';
 import ChannelService from '../service/channel.service';
 import UserService from '../service/user.service';
@@ -33,9 +34,60 @@ const getMyChannel = async (req: Request, res: Response<GetMyChannelResponse>) =
 
   res.status(200).json({ channel });
 };
+
+interface UpdateChannelRequest {
+  name: string;
+}
+
+interface UpdateChannelResponse {
+  message: string;
+}
+const updateChannel = async (
+  req: Request<any, UpdateChannelResponse, UpdateChannelRequest>,
+  res: Response,
+) => {
+  const currentUser: UserDTO = res.locals.user;
+  const channelDetail = req.body;
+  const channel = await ChannelService.getChannelByOwner(currentUser.id);
+  const updatedchannel = await ChannelService.updateChannel({ id: channel.id, ...channelDetail });
+  res.status(200).json({
+    message: 'Channel updated',
+  });
+};
+
+interface UploadProfileImageResponse {
+  message: string;
+}
+
+const uploadImage = async (req: Request, res: Response<UploadProfileImageResponse>) => {
+  const currentUser: UserDTO = res.locals.user;
+  const channel = await ChannelService.getChannelByOwner(currentUser.id);
+  const fileName = await saveFileContent(req.file);
+  const updatedchannel = await ChannelService.updateChannel({ id: channel.id, imageUrl: fileName });
+  res.status(200).json({
+    message: 'Uploaded successfully',
+  });
+};
+
+const uploadCoverImage = async (req: Request, res: Response) => {
+  const currentUser: UserDTO = res.locals.user;
+  const channel = await ChannelService.getChannelByOwner(currentUser.id);
+  const fileName = await saveFileContent(req.file);
+  const updatedchannel = await ChannelService.updateChannel({
+    id: channel.id,
+    coverImageUrl: fileName,
+  });
+  res.status(200).json({
+    message: 'Uploaded successfully',
+  });
+};
+
 const LoggedUserController = {
   getProfileDetail,
   getMyChannel,
+  updateChannel,
+  uploadImage,
+  uploadCoverImage,
 };
 
 export default LoggedUserController;

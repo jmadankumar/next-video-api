@@ -15,7 +15,7 @@ const createChannel = async (channelDTO: ChannelDTO): Promise<ChannelDTO> => {
   return ChannelDTOUtil.fromIChannel(channel);
 };
 
-const updateChannel = async (channelDTO: ChannelDTO): Promise<ChannelDTO> => {
+const updateChannel = async (channelDTO: Partial<ChannelDTO>): Promise<ChannelDTO> => {
   if (!channelDTO.id) {
     throw new BadRequestError('Channel not found');
   }
@@ -23,7 +23,7 @@ const updateChannel = async (channelDTO: ChannelDTO): Promise<ChannelDTO> => {
     { _id: channelDTO.id },
     { ...channelDTO },
   );
-  if (!channelDTO) {
+  if (!channelInDB) {
     throw new BadRequestError('Unable to update the Channel ');
   }
   return getChannelById(channelInDB.id);
@@ -85,7 +85,7 @@ const ChannelService = {
   getChannelById,
   getAllChannel,
   getAllChannelCount,
-  getChannelByOwner
+  getChannelByOwner,
 };
 
 export default ChannelService;

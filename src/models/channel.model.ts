@@ -17,6 +17,8 @@ interface IChannelSchema extends Document {
 
 export interface IChannel extends IChannelSchema {
   getOwner(): IUser;
+  getProfileImage: () => string;
+  getCoverImage: () => string;
 }
 
 const channelSchema = new Schema(
@@ -66,6 +68,14 @@ const channelSchema = new Schema(
   },
   { collection: 'channel' },
 );
+
+channelSchema.methods.getProfileImage = function () {
+  return process.env.FILE_CONTENT_PATH + this.imageUrl;
+};
+
+channelSchema.methods.getCoverImage = function () {
+  return process.env.FILE_CONTENT_PATH + this.coverImageUrl;
+};
 
 const ChannelModel = model<IChannel>('Channel', channelSchema);
 

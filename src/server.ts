@@ -18,7 +18,14 @@ initDatabase();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(cors({ credentials: true, origin: ['http://localhost:3000','*'], preflightContinue: true }));
+app.use(
+  cors({
+    credentials: true,
+    origin: ['http://localhost:3000', '*'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD'],
+    optionsSuccessStatus: 200,
+  }),
+);
 app.use(parseAuthToken);
 app.use('/api', apiRouter);
 
